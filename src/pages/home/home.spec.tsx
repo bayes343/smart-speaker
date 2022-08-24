@@ -1,11 +1,11 @@
-import { WelcomePage } from './welcome';
+import { HomePage } from './home';
 import { Asap, TestHelpers } from 'fyord';
 
 describe('WelcomePage', () => {
-  let classUnderTest: WelcomePage;
+  let classUnderTest: HomePage;
 
   beforeEach(() => {
-    classUnderTest = new WelcomePage();
+    classUnderTest = new HomePage();
   });
 
   it('should construct', () => {

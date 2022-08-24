@@ -34,5 +34,6 @@ export class Bot {
 
   public async Activate(): Promise<void> {
     await this.sr.HandleSpeechCommands(this.commands, () => this.stopListening);
+    this.stopListening = false;
   }
 }

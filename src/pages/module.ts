@@ -1,7 +1,7 @@
-import { WelcomePage } from './welcome/welcome';
+import { HomePage } from './home/home';
 import { NotFoundPage } from './not-found/not-found';
 
 export const pages = [
-  new WelcomePage(),
+  new HomePage(),
   new NotFoundPage()
 ];

@@ -1,15 +1,18 @@
+import { Strings } from 'tsbase/System/Strings';
+import { Queryable } from 'tsbase/Collections/Queryable';
 import { AsyncObservable } from 'tsbase/Patterns/Observable/AsyncObservable';
 import { ISpeechCommand } from 'tsbase/Utility/Speech/ISpeechCommand';
 
-const timeRequests = [
-  'what time is it',
-  'what\'s the time',
-  'what is the time',
-  'tell me the time'
+const timeKeywords = [
+  'what is',
+  'whats the',
+  'time',
+  'tell me',
+  'do you know'
 ];
 
-const dayRequests = timeRequests.map(tr => tr.replace('time', 'date'))
-  .concat(timeRequests.map(tr => tr.replace('time', 'day')));
+const dayKeywords = timeKeywords.map(tr => tr.replace('time', 'date'))
+  .concat(timeKeywords.map(tr => tr.replace('time', 'day')));
 
 export class Time implements ISpeechCommand {
   private requestType: 'time' | 'day' = 'day';
@@ -19,15 +22,17 @@ export class Time implements ISpeechCommand {
   ) { }
 
   Condition = (transcript: string) => {
-    if (timeRequests.some(t => transcript.toLowerCase().includes(t))) {
-      this.requestType = 'time';
-      return true;
-    } else if (dayRequests.some(t => transcript.toLowerCase().includes(t))) {
-      return true;
-    } else {
-      return false;
+    transcript = transcript.replace(/[^a-zA-Z0-9 ]/g, Strings.Empty);
+    if (transcript) {
+      if (Queryable.From(timeKeywords).Search(transcript.toLowerCase(), 3).length > 1) {
+        this.requestType = 'time';
+        return true;
+      } else if (Queryable.From(dayKeywords).Search(transcript.toLowerCase(), 3).length > 1) {
+        this.requestType = 'day';
+        return true;
+      }
     }
-
+    return false;
   };
   Action = async () => {
     await this.speaker.Publish(`The local ${this.requestType} is: ${this.requestType === 'time' ?
