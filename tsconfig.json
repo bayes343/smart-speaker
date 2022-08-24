@@ -26,6 +26,7 @@
     "jsx": "react",
     "jsxFactory": "ParseJsx",
     "jsxFragmentFactory": "Fragment",
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true
   }
 }
