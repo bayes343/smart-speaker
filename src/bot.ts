@@ -2,6 +2,7 @@ import { AsyncObservable } from 'tsbase/Patterns/Observable/AsyncObservable';
 import { ISpeechCommand } from 'tsbase/Utility/Speech/ISpeechCommand';
 import { SpeechRecognizer, SpeechSynthesizer } from 'tsbase/Utility/Speech/module';
 import { Greeting, Stop, Unknown } from './speechCommands/module';
+import { Time } from './speechCommands/dateTime';
 
 speechSynthesis.getVoices(); // bug with web api? - doesn't find voices on line 9 without this
 
@@ -14,6 +15,7 @@ export class Bot {
   private commands: ISpeechCommand[] = [
     new Stop(this.Speaker, () => this.stopListening = true),
     new Greeting(this.Speaker),
+    new Time(this.Speaker),
     new Unknown(this.Speaker)
   ];
 
