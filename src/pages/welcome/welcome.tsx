@@ -1,4 +1,4 @@
-import { ParseJsx, Page, Route } from 'fyord';
+import { ParseJsx, Page, Route, State } from 'fyord';
 import styles from './welcome.module.scss';
 import { Bot } from '../../bot';
 
@@ -7,9 +7,21 @@ const fyordIcon = <svg viewBox="0 0 225 225" width="140" xmlns="http://www.w3.or
 /* eslint-enable max-len */
 
 export class WelcomePage extends Page {
-  enabled = true;
+  @State private enabled = true;
+  private bot = new Bot();
+  @State private subtitle = '';
+
   Title = 'Welcome!';
-  Route = async (route: Route) => route.path === document.baseURI.split(location.origin)[1];
+  Route = async (route: Route) => {
+    if (route.path === document.baseURI.split(location.origin)[1]) {
+      this.bot.Speaker.Subscribe(async (transcript) => {
+        this.subtitle = transcript || '';
+      });
+      return true;
+    }
+
+    return false;
+  };
   Template = async () => {
     return <div class={styles.welcome}>
       <header>
@@ -17,14 +29,15 @@ export class WelcomePage extends Page {
           {fyordIcon}
           <h1>Welcome to Smart Speaker</h1>
           <p>
-            <button onclick={async () => {
+            {this.enabled && <button onclick={async () => {
               if (this.enabled) {
                 this.enabled = false;
-                await new Bot().Activate();
+                await this.bot.Activate();
               }
               this.enabled = true;
-            }}>Listen...</button>
+            }}>Start Listening...</button>}
           </p>
+          <p>{this.subtitle}</p>
         </div>
       </header>
     </div>;
