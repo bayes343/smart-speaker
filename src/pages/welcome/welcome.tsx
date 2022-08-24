@@ -37,7 +37,7 @@ export class WelcomePage extends Page {
               this.enabled = true;
             }}>Start Listening...</button>}
           </p>
-          <p>{this.subtitle}</p>
+          {this.subtitle && <blockquote>{this.subtitle}</blockquote>}
         </div>
       </header>
     </div>;
