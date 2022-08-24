@@ -5,8 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    bundle: './src/index.ts',
-    'service-worker': './src/service-worker.ts'
+    bundle: './src/index.ts'
   },
   mode: 'development',
   devServer: {

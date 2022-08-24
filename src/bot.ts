@@ -1,6 +1,6 @@
 import { ISpeechCommand } from 'tsbase/Utility/Speech/ISpeechCommand';
 import { SpeechRecognizer, SpeechSynthesizer } from 'tsbase/Utility/Speech/module';
-import { Stop, Unknown } from './speechCommands/module';
+import { Greeting, Stop, Unknown } from './speechCommands/module';
 
 speechSynthesis.getVoices(); // bug with web api? - doesn't find voices on line 9 without this
 
@@ -11,6 +11,7 @@ export class Bot {
   private stopListening = false;
   private commands: ISpeechCommand[] = [
     new Stop(this.ss, this.voice, () => this.stopListening = true),
+    new Greeting(this.ss, this.voice),
     new Unknown(this.ss, this.voice)
   ];
 
