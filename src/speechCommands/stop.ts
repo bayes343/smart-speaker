@@ -5,10 +5,11 @@ import { SpeechCommand } from './speechCommand';
 const stopWords = [
   'stop',
   'halt',
-  'goodbye'
+  'goodbye',
+  'bye'
 ];
 
-@SpeechCommand
+@SpeechCommand()
 export class Stop implements ISpeechCommand {
   constructor(
     private bot = Bot.Instance()

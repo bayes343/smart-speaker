@@ -2,7 +2,7 @@ import { ISpeechCommand } from 'tsbase/Utility/Speech/ISpeechCommand';
 import { Bot } from '../bot';
 import { SpeechCommand } from './speechCommand';
 
-@SpeechCommand
+@SpeechCommand()
 export class Unknown implements ISpeechCommand {
   private currentTranscript = '';
 
@@ -16,5 +16,5 @@ export class Unknown implements ISpeechCommand {
   };
 
   Action = async () => await this.bot.Speaker.Publish(
-    `Sorry, I don't know how to react to: "${this.currentTranscript}"`);
+    `Sorry, I don't know how to react to, "${this.currentTranscript}"`);
 }

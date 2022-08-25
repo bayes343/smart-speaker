@@ -12,7 +12,8 @@ export class Bot {
   public static Destroy = (): void => { this.instance = null; };
 
   public Speaker = new AsyncObservable<string>();
-  public Commands: ISpeechCommand[] = [];
+  public ActiveCommands: ISpeechCommand[] = [];
+  public PassiveCommands: ISpeechCommand[] = [];
   private stopListening = false;
 
   private voice: SpeechSynthesisVoice | null = null;
@@ -38,7 +39,7 @@ export class Bot {
   }
 
   public async Activate(): Promise<void> {
-    await this.activeSpeechRecognizer.HandleSpeechCommands(this.Commands, () => this.stopListening);
+    await this.activeSpeechRecognizer.HandleSpeechCommands(this.ActiveCommands, () => this.stopListening);
     this.stopListening = false;
   }
 

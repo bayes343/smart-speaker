@@ -17,7 +17,7 @@ const promptKeywords = [
   'do you know'
 ];
 
-@SpeechCommand
+@SpeechCommand()
 export class DateTime implements ISpeechCommand {
   private requestType = RequestType.DateTime;
 

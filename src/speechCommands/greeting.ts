@@ -10,14 +10,24 @@ const greetings = [
   'good evening'
 ];
 
-@SpeechCommand
+@SpeechCommand()
 export class Greeting implements ISpeechCommand {
+  private greeting = '';
+
   constructor(
     private bot = Bot.Instance()
   ) { }
 
-  Condition = (transcript: string) => greetings.some(w => transcript.toLowerCase().includes(w));
+  Condition = (transcript: string) => {
+    return greetings.some(w => {
+      if (transcript.toLowerCase().includes(w)) {
+        this.greeting = w;
+        return true;
+      }
+      return false;
+    });
+  };
   Action = async () => {
-    await this.bot.Speaker.Publish('Hello! What can I do for you?');
+    await this.bot.Speaker.Publish(this.greeting);
   };
 }
