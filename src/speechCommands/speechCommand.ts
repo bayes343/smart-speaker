@@ -1,15 +1,11 @@
 import { ISpeechCommand } from 'tsbase/Utility/Speech/ISpeechCommand';
 import { Bot } from '../bot';
+import { ListeningModes } from '../listeningModes';
 
-export enum Modes {
-  Active,
-  Passive
-}
-
-export function SpeechCommand(mode = Modes.Active) {
+export function SpeechCommand(mode = ListeningModes.Active) {
   return (target: { new(): ISpeechCommand }) => {
     const bot = Bot.Instance();
-    const commandsReference = mode === Modes.Active ? bot.ActiveCommands : bot.PassiveCommands;
+    const commandsReference = mode === ListeningModes.Active ? bot.ActiveCommands : bot.PassiveCommands;
     commandsReference.push(new target());
   };
 }

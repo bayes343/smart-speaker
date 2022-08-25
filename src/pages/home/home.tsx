@@ -53,4 +53,8 @@ export class HomePage extends Page {
       </header>
     </div>;
   };
+
+  Disconnected = () => {
+    this.bot.Deactivate();
+  }
 }

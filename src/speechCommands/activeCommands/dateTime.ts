@@ -1,8 +1,7 @@
 import { Strings } from 'tsbase/System/Strings';
 import { Queryable } from 'tsbase/Collections/Queryable';
-import { ISpeechCommand } from 'tsbase/Utility/Speech/ISpeechCommand';
-import { Bot } from '../bot';
-import { SpeechCommand } from './speechCommand';
+import { SpeechCommand } from '../speechCommand';
+import { ActiveCommand } from './activeCommand';
 
 enum RequestType {
   Time = 'time',
@@ -18,12 +17,8 @@ const promptKeywords = [
 ];
 
 @SpeechCommand()
-export class DateTime implements ISpeechCommand {
+export class DateTime extends ActiveCommand {
   private requestType = RequestType.DateTime;
-
-  constructor(
-    private bot = Bot.Instance()
-  ) { }
 
   Condition = (transcript: string) => {
     let result = false;
@@ -42,7 +37,7 @@ export class DateTime implements ISpeechCommand {
     return result;
   };
 
-  Action = async () => {
+  action = async () => {
     const currentDateTime = new Date();
     const requestTypeString: Record<RequestType, string> = {
       [RequestType.Date]: currentDateTime.toLocaleDateString(),

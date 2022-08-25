@@ -1,6 +1,5 @@
-import { ISpeechCommand } from 'tsbase/Utility/Speech/ISpeechCommand';
-import { Bot } from '../bot';
-import { SpeechCommand } from './speechCommand';
+import { ActiveCommand } from './activeCommand';
+import { SpeechCommand } from '../speechCommand';
 
 const greetings = [
   'hi',
@@ -11,12 +10,8 @@ const greetings = [
 ];
 
 @SpeechCommand()
-export class Greeting implements ISpeechCommand {
+export class Greeting extends ActiveCommand {
   private greeting = '';
-
-  constructor(
-    private bot = Bot.Instance()
-  ) { }
 
   Condition = (transcript: string) => {
     return greetings.some(w => {
@@ -27,7 +22,6 @@ export class Greeting implements ISpeechCommand {
       return false;
     });
   };
-  Action = async () => {
-    await this.bot.Speaker.Publish(this.greeting);
-  };
+
+  action = async () => await this.bot.Speaker.Publish(this.greeting);
 }
