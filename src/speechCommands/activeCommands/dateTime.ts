@@ -1,7 +1,7 @@
-import { Strings } from 'tsbase/System/Strings';
 import { Queryable } from 'tsbase/Collections/Queryable';
 import { SpeechCommand } from '../speechCommand';
 import { ActiveCommand } from './activeCommand';
+import { removeSpecialCharacters } from '../../util/removeSpecialCharacters';
 
 enum RequestType {
   Time = 'time',
@@ -22,7 +22,7 @@ export class DateTime extends ActiveCommand {
 
   Condition = (transcript: string) => {
     let result = false;
-    transcript = transcript.replace(/[^a-zA-Z0-9 ]/g, Strings.Empty);
+    transcript = removeSpecialCharacters(transcript);
 
     if (transcript) {
       const isPrompt = Queryable.From(promptKeywords).Search(transcript.toLowerCase(), 3).length;

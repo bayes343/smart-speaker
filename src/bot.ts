@@ -1,4 +1,5 @@
 import { AsyncObservable } from 'tsbase/Patterns/Observable/AsyncObservable';
+import { Observable } from 'tsbase/Patterns/Observable/Observable';
 import { ISpeechCommand } from 'tsbase/Utility/Speech/ISpeechCommand';
 import { SpeechRecognizer, SpeechSynthesizer } from 'tsbase/Utility/Speech/module';
 import { ListeningModes } from './listeningModes';
@@ -15,15 +16,21 @@ export class Bot {
   public Speaker = new AsyncObservable<string>();
   public ActiveCommands: ISpeechCommand[] = [];
   public PassiveCommands: ISpeechCommand[] = [];
+  public VoiceChanged = new Observable();
   private stopPassiveListening = false;
   private stopActiveListening = false;
 
+  public get AvailableVoices(): Array<SpeechSynthesisVoice> {
+    return speechSynthesis.getVoices().filter(v => v.localService && v.lang.startsWith('en'));
+  }
+
   private voice: SpeechSynthesisVoice | null = null;
   public get Voice(): SpeechSynthesisVoice {
-    return this.voice = this.voice || speechSynthesis.getVoices().filter(v => v.localService && v.lang.startsWith('en'))[1];
+    return this.voice = this.voice || this.AvailableVoices[1];
   }
   public set Voice(v: SpeechSynthesisVoice) {
     this.voice = v;
+    this.VoiceChanged.Publish();
   }
 
   private constructor(

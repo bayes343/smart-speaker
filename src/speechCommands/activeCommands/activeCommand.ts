@@ -10,7 +10,7 @@ export abstract class ActiveCommand implements ISpeechCommand {
   abstract Condition: (transcript: string) => boolean
   protected abstract action: () => void;
   Action = async () => {
-    this.action();
+    await this.action();
     this.bot.Deactivate(ListeningModes.Active);
   }
 }

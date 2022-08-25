@@ -26,6 +26,8 @@ export class HomePage extends Page {
         this.botName = this.bot.Voice.name;
       });
 
+      this.bot.VoiceChanged.Subscribe(() => this.botName = this.bot.Voice.name);
+
       return true;
     }
 
