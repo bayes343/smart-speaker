@@ -1,5 +1,6 @@
-import { AsyncObservable } from 'tsbase/Patterns/Observable/AsyncObservable';
 import { ISpeechCommand } from 'tsbase/Utility/Speech/ISpeechCommand';
+import { Bot } from '../bot';
+import { SpeechCommand } from './speechCommand';
 
 const stopWords = [
   'stop',
@@ -7,15 +8,15 @@ const stopWords = [
   'goodbye'
 ];
 
+@SpeechCommand
 export class Stop implements ISpeechCommand {
   constructor(
-    private speaker: AsyncObservable<string>,
-    private stopFunction: () => void
+    private bot = Bot.Instance()
   ) { }
 
   Condition = (transcript: string) => stopWords.some(w => transcript.toLowerCase().includes(w));
   Action = async () => {
-    await this.speaker.Publish('Goodbye');
-    this.stopFunction();
+    await this.bot.Speaker.Publish('Goodbye');
+    this.bot.Deactivate();
   };
 }

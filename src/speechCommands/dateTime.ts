@@ -1,7 +1,8 @@
 import { Strings } from 'tsbase/System/Strings';
 import { Queryable } from 'tsbase/Collections/Queryable';
-import { AsyncObservable } from 'tsbase/Patterns/Observable/AsyncObservable';
 import { ISpeechCommand } from 'tsbase/Utility/Speech/ISpeechCommand';
+import { Bot } from '../bot';
+import { SpeechCommand } from './speechCommand';
 
 enum RequestType {
   Time = 'time',
@@ -16,11 +17,12 @@ const promptKeywords = [
   'do you know'
 ];
 
+@SpeechCommand
 export class DateTime implements ISpeechCommand {
   private requestType = RequestType.DateTime;
 
   constructor(
-    private speaker: AsyncObservable<string>
+    private bot = Bot.Instance()
   ) { }
 
   Condition = (transcript: string) => {
@@ -48,7 +50,7 @@ export class DateTime implements ISpeechCommand {
       [RequestType.DateTime]: currentDateTime.toLocaleString()
     };
 
-    await this.speaker.Publish(`The local ${this.requestType} is: ${requestTypeString[this.requestType]}.`);
+    await this.bot.Speaker.Publish(`The local ${this.requestType} is: ${requestTypeString[this.requestType]}.`);
   };
 
   private setRequestType(dayIncluded: boolean, timeIncluded: boolean): void {
