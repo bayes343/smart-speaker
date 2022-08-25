@@ -1,5 +1,5 @@
 import { ParseJsx, Page, Route, State } from 'fyord';
-import styles from './welcome.module.scss';
+import styles from './home.module.scss';
 import { Bot } from '../../bot';
 
 /* eslint-disable max-len */
@@ -7,7 +7,7 @@ const fyordIcon = <svg viewBox="0 0 225 225" width="140" xmlns="http://www.w3.or
 /* eslint-enable max-len */
 
 export class HomePage extends Page {
-  private bot = new Bot();
+  private bot = Bot.Instance();
   @State private enabled = true;
   @State private subtitle = '';
 
